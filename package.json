@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "@line/bot-sdk": "^9.2.2",
+    "aws-sdk": "^2.1642.0",
+    "body-parser": "^1.20.2",
+    "child_process": "^1.0.2",
+    "express": "^4.19.2"
+  },
+  "name": "raspi-catcam",
+  "version": "1.0.0",
+  "description": "LINE Cat-Watch-Camera with Raspberry pi ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tariki-code",
+  "license": "MIT"
+}
