@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "@line/bot-sdk": "^9.2.2",
-    "aws-sdk": "^2.1642.0",
     "body-parser": "^1.20.2",
     "child_process": "^1.0.2",
     "express": "^4.19.2"
@@ -11,8 +10,12 @@
   "description": "LINE Cat-Watch-Camera with Raspberry pi ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "tariki-code",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  }
 }
