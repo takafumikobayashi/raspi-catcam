@@ -114,10 +114,12 @@ async function captureRaspiImage(imageNumber) {
 // 動画撮影からメッセージオブジェクト作成
 async function captureRaspiVideo() {
   const uniqueDateString = getFormattedDate();
-  const fileNamePreview = `preview_${uniqueDateString}.jpeg`;
+  const fileNamePreview = `preview_${uniqueDateString}.jpg`;
   const fileNameVideo = `video_${uniqueDateString}.h264`;
+  const fileNameConverted = `video_${uniqueDateString}.mp4`;
   const fileFullPathPreview = process.env.RASPI_LOCAL_PATH + '/' + fileNamePreview;
   const fileFullPathVideo = process.env.RASPI_LOCAL_PATH + '/' + fileNameVideo;
+  const fileFullPathConverted = process.env.RASPI_LOCAL_PATH + '/' + fileNameConverted;
 
   // まずはプレビュー用のイメージから
   await execPromise('raspistill -vf -hf -w 320 -h 240 -o ' + fileFullPathPreview);
@@ -125,7 +127,10 @@ async function captureRaspiVideo() {
 
   // 続けて動画を撮影
   await execPromise('raspivid -o ' + fileFullPathVideo + ' -t 10000');
-  const originalContentUrl = await uploadImageToS3(fileFullPathVideo, fileNameVideo, 'video/mp4');
+
+  // h.264をMP4に変換してS3にアップロード
+  await execPromise(`ffmpeg -i ${fileFullPathVideo} -c:v copy ${fileFullPathConverted}`);
+  const originalContentUrl = await uploadImageToS3(fileFullPathConverted, fileNameConverted, 'video/mp4');
 
   // メッセージオブジェクトの定義
   let columns = {
