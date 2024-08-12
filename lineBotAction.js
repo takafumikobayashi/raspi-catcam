@@ -50,6 +50,7 @@ module.exports = async function lineBotAction(replyToken, messageText, groupId) 
     console.log('リプライ完了！');
 
     const messageColumns = await captureRaspiImage(process.env.RASPI_NUMBER_OF_IMAGE);
+    console.log("groupId = " + groupId)
     await client.pushMessage(groupId, messageColumns);
 
     if (messageText.includes(process.env.LINE_VIDEO_CAPTURE_KEYWORD)) {
@@ -92,7 +93,7 @@ async function captureRaspiImage(imageNumber) {
     const fileFullPath = process.env.RASPI_LOCAL_PATH + '/' + fileName;
 
     // 静止画撮影
-    await execPromise('raspistill -vf -hf -o ' + fileFullPath);
+    await execPromise('raspistill -vf -hf -w 320 -h 240 -o ' + fileFullPath);
 
     // S3に保存
     const s3Url = await uploadImageToS3(fileFullPath, fileName, 'image/jpeg');
@@ -100,7 +101,7 @@ async function captureRaspiImage(imageNumber) {
 
     // メッセージオブジェクト作成
     const columns_elements = {imageUrl: s3Url};
-    const action = {type: 'uri', label: fileName, uri: s3Url};
+    const action = {type: 'uri', label: '拡大してみる', uri: s3Url};
     columns_elements['action'] = action;
     columns.push(columns_elements);
   }
@@ -118,7 +119,7 @@ async function captureRaspiVideo() {
   const fileFullPathVideo = process.env.RASPI_LOCAL_PATH + '/' + fileNameVideo;
 
   // まずはプレビュー用のイメージから
-  await execPromise('raspistill -vf -hf -o ' + fileFullPathPreview);
+  await execPromise('raspistill -vf -hf -w 320 -h 240 -o ' + fileFullPathPreview);
   const previewImageUrl = await uploadImageToS3(fileFullPathPreview, fileNamePreview, 'image/jpeg');
 
   // 続けて動画を撮影
