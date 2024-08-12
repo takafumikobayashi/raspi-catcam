@@ -79,6 +79,7 @@ function getFormattedDate() {
   return `${year}${month}${day}_${hours}${minutes}${seconds}`;
 }
 
+// 静止画撮影からメッセージオブジェクト作成
 async function captureRaspiImage(imageNumber) {
   const uniqueDateString = getFormattedDate();
 
@@ -110,6 +111,7 @@ async function captureRaspiImage(imageNumber) {
   return image_carousel;
 }
 
+// 動画撮影からメッセージオブジェクト作成
 async function captureRaspiVideo() {
   const uniqueDateString = getFormattedDate();
   const fileNamePreview = `preview_${uniqueDateString}.jpeg`;
@@ -139,9 +141,6 @@ async function uploadImageToS3(filePath, fileName, contentType) {
   try {
     const fileContent = await fs.readFile(filePath);  // 非同期でファイルを読み込む
     let key = process.env.AWS_S3_BUCKET_PATH_IMAGE + '/' + fileName;
-    if (contentType === 'video/mp4') {
-      key = process.env.AWS_S3_BUCKET_PATH_VIDEO + '/' + fileName;
-    }
   
     const params = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
