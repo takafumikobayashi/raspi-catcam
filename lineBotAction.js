@@ -139,7 +139,7 @@ async function uploadImageToS3(filePath, fileName, contentType) {
   try {
     const fileContent = await fs.readFile(filePath);  // 非同期でファイルを読み込む
     let key = process.env.AWS_S3_BUCKET_PATH_IMAGE + '/' + fileName;
-    if (ContentType === 'video/mp4') {
+    if (contentType === 'video/mp4') {
       key = process.env.AWS_S3_BUCKET_PATH_VIDEO + '/' + fileName;
     }
   
