@@ -147,8 +147,7 @@ async function uploadImageToS3(filePath, fileName, contentType) {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: key,
       Body: fileContent,
-      ContentType: contentType,  // 画像のMIMEタイプを指定
-      ACL: 'public-read'  // これを追加してオブジェクトをパブリックに設定
+      ContentType: contentType  // 画像のMIMEタイプを指定
     };
   
     await s3.upload(params).promise();
