@@ -135,7 +135,7 @@ async function captureRaspiVideo() {
 }
 
 // AWS S3アップロード関数
-async function uploadImageToS3(filePath, fileName, ContentType) {
+async function uploadImageToS3(filePath, fileName, contentType) {
   try {
     const fileContent = await fs.readFile(filePath);  // 非同期でファイルを読み込む
     let key = process.env.AWS_S3_BUCKET_PATH_IMAGE + '/' + fileName;
@@ -147,8 +147,10 @@ async function uploadImageToS3(filePath, fileName, ContentType) {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: key,
       Body: fileContent,
-      ContentType: ContentType  // 画像のMIMEタイプを指定
+      ContentType: contentType  // 画像のMIMEタイプを指定
     };
+
+    console.log(params)
   
     await s3.upload(params).promise();
     console.log(`File uploaded successfully at ${process.env.AWS_S3_BUCKET_NAME}/${key}`);
