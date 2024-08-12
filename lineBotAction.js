@@ -149,8 +149,6 @@ async function uploadImageToS3(filePath, fileName, contentType) {
       Body: fileContent,
       ContentType: contentType  // 画像のMIMEタイプを指定
     };
-
-    console.log(params)
   
     await s3.upload(params).promise();
     console.log(`File uploaded successfully at ${process.env.AWS_S3_BUCKET_NAME}/${key}`);
