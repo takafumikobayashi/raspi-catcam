@@ -28,13 +28,15 @@ const pollMessages = async () => {
             try {
                 // メッセージをparse
                 const body = JSON.parse(message.Body);
-                const messageText = body.events[0].message.text;
-
-                // メッセージにREPLYキーワードが含まれているかをチェック
-                if (messageText.includes(process.env.LINE_REPLY_INCLUDE_KEYWORD)) {
-                  // 撮影およびLINE投稿処理
-                  await lineBotAction(body.events[0].replyToken, body.events[0].message.text, body.events[0].source.groupId);
-                };
+                const eventType = body.events[0].type
+                if (eventType == 'message') {
+                  const messageText = body.events[0].message.text;
+                  // メッセージにREPLYキーワードが含まれているかをチェック
+                  if (messageText.includes(process.env.LINE_REPLY_INCLUDE_KEYWORD)) {
+                    // 撮影およびLINE投稿処理
+                    await lineBotAction(body.events[0].replyToken, body.events[0].message.text, body.events[0].source.groupId);
+                  };
+                }
                 
                 // メッセージキューの削除
                 const deleteParams = {
