@@ -13,7 +13,7 @@ async function generateText(message) {
 - 画像: request 1, number=枚数 (未指定1、最大5)
 - 動画: request 2, number=1
 - 画像と動画: request 3, number=3
-- リクエストなし: request 0, number=0, msgに30文字程度で内容に対して可愛いメッセージを返信
+- リクエストなし: request 0, number=0, msgに50文字以内で内容に対して可愛いメッセージを返信
 
 メッセージ:
 {${message}}`
