@@ -1,5 +1,7 @@
 require('dotenv').config();
 const { exec } = require('child_process');
+const { uploadImageToS3, analyzeImageForCat } = require('./awsAction');
+const { type } = require('os');
 
 // execをPromiseでラップした関数
 const execPromise = (command) => {
@@ -41,6 +43,8 @@ async function captureRaspiImage(imageNumber) {
   let image_carousel = {type: 'template', altText: uniqueDateString + '頃の様子です！'};
   let template = {"type": "image_carousel"};
   let columns = [];
+  let analyzeUrl;
+  let messageObject = [];
 
   for (let n = 0; n < imageNumber; n++) {
     const fileName = `photo_${uniqueDateString}_${n}.jpg`;
@@ -51,8 +55,8 @@ async function captureRaspiImage(imageNumber) {
   
     // S3に保存
     const s3Url = await uploadImageToS3(fileFullPath, fileName, 'image/jpeg');
-    console.log('S3 URL:', s3Url);
-  
+    analyzeUrl = s3Url;
+    
     // メッセージオブジェクト作成
     const columns_elements = {imageUrl: s3Url};
     const action = {type: 'uri', label: '拡大してみる', uri: s3Url};
@@ -60,9 +64,21 @@ async function captureRaspiImage(imageNumber) {
     columns.push(columns_elements);
   }
 
+  // 1枚だけRekognitionを使って画像を分析
+  const analyzeMessage = await analyzeImageForCat(analyzeUrl);
+  // 分析結果をテキストメッセージで返信
+  const column = {
+    type: 'text',
+    text: analyzeMessage
+  };
+
+  // イメージカルーセルと合わせて返信
   template['columns']=columns
   image_carousel['template']=template
-  return image_carousel;
+  messageObject.push(image_carousel)
+  messageObject.push(column)
+
+  return messageObject;
 }
 
 // 動画撮影からメッセージオブジェクト作成

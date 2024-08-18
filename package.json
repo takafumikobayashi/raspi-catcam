@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@aws-sdk/client-rekognition": "^3.632.0",
     "@aws-sdk/client-s3": "^3.633.0",
     "@aws-sdk/client-sqs": "^3.632.0",
     "@line/bot-sdk": "^9.2.2",
