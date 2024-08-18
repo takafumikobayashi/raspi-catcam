@@ -93,7 +93,7 @@ async function captureRaspiImage(imageNumber) {
     const fileFullPath = process.env.RASPI_LOCAL_PATH + '/' + fileName;
 
     // 静止画撮影
-    await execPromise('raspistill -vf -hf -w 320 -h 240 -o ' + fileFullPath);
+    await execPromise('raspistill -w 1280 -h 720 -o ' + fileFullPath);
 
     // S3に保存
     const s3Url = await uploadImageToS3(fileFullPath, fileName, 'image/jpeg');
@@ -122,11 +122,11 @@ async function captureRaspiVideo() {
   const fileFullPathConverted = process.env.RASPI_LOCAL_PATH + '/' + fileNameConverted;
 
   // まずはプレビュー用のイメージから
-  await execPromise('raspistill -vf -hf -w 320 -h 240 -o ' + fileFullPathPreview);
+  await execPromise('raspistill -w 320 -h 240 -o ' + fileFullPathPreview);
   const previewImageUrl = await uploadImageToS3(fileFullPathPreview, fileNamePreview, 'image/jpeg');
 
   // 続けて動画を撮影
-  await execPromise('raspivid -o ' + fileFullPathVideo + ' -t 10000');
+  await execPromise('raspivid -o ' + fileFullPathVideo + ' -t 10000 -fps 60 -w 1280 -h 720');
 
   // h.264をMP4に変換してS3にアップロード
   await execPromise(`ffmpeg -i ${fileFullPathVideo} -c:v copy ${fileFullPathConverted}`);
