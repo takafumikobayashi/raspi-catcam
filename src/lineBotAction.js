@@ -28,7 +28,6 @@ async function lineBotAction(replyToken, messageText, groupId) {
 
   try {
     await client.replyMessage(replyToken, [textMessage, addMessage]);
-    console.log('リプライ完了！');
 
     //テキストの内容から何を求めているのかGPTで判断
     const requestObjects = JSON.parse(await generateText(messageText));
