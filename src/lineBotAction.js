@@ -11,7 +11,7 @@ async function lineBotAction(replyToken, messageText, groupId) {
 
   const textMessage = {
     type: 'text',
-    text: '撮影するのでちょっと待ってね！'
+    text: 'はーい！'
   };
 
   // ランダムスタンプ配列からランダムに選択
@@ -31,7 +31,7 @@ async function lineBotAction(replyToken, messageText, groupId) {
     console.log('リプライ完了！');
 
     //テキストの内容から何を求めているのかGPTで判断
-    const requestObjects = JSON.parse(await generateText(textMessage));
+    const requestObjects = JSON.parse(await generateText(messageText));
 
     //判断結果に基づき実行
     const requestImage = 1  //静止画のみ
@@ -56,6 +56,13 @@ async function lineBotAction(replyToken, messageText, groupId) {
         const videoMessageColumnsBoth = await captureRaspiVideo();
         await client.pushMessage(groupId, videoMessageColumnsBoth);
         break;
+
+      default:
+        const noRequestMessage = {
+          type: 'text',
+          text: requestObjects.msg
+        };
+        await client.pushMessage(groupId, noRequestMessage);
     }
 
     return "Success";

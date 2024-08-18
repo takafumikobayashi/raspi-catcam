@@ -13,7 +13,7 @@ async function generateText(message) {
 - 画像: request 1, number=枚数 (未指定1、最大5)
 - 動画: request 2, number=1
 - 画像と動画: request 3, number=3
-- リクエストなし: request 0, number=0
+- リクエストなし: request 0, number=0, msgに30文字程度で内容に対して可愛いメッセージを返信
 
 メッセージ:
 {${message}}`
@@ -22,14 +22,12 @@ async function generateText(message) {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [{ "role": "user", "content": prompt }],
+      temperature: 0.8,  // temperatureを指定
     });
-    console.log("gpt response:" + response); // デバッグ用にレスポンス全体を出力
     return response.choices[0].message.content;
   } catch (error) {
     console.error("Error generating text:", error);
     throw error; // エラーが発生した場合に呼び出し元にエラーを伝える
   }
 }
-
-// module.exports で関数をエクスポート
 module.exports = generateText;

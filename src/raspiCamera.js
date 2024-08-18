@@ -94,4 +94,4 @@ async function captureRaspiVideo() {
   };
   return columns;
 }
-module.exports = {captureRaspiImage, captureRaspiVideo}
+module.exports = {captureRaspiImage, captureRaspiVideo};
