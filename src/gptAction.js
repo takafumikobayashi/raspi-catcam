@@ -23,7 +23,8 @@ async function generateText(message) {
       model: "gpt-4o-mini",
       messages: [{ "role": "user", "content": prompt }],
     });
-    return response.data.choices[0].text;
+    console.log("gpt response:" + response); // デバッグ用にレスポンス全体を出力
+    return response.choices[0].message.content;
   } catch (error) {
     console.error("Error generating text:", error);
     throw error; // エラーが発生した場合に呼び出し元にエラーを伝える
