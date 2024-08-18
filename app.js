@@ -36,10 +36,12 @@ const pollMessages = async () => {
                     groupId = body.events[0].source.userId
                   }
                   // メッセージにREPLYキーワードが含まれているかをチェック
-                  if (messageText.includes(process.env.LINE_REPLY_INCLUDE_KEYWORD)) {
-                    // 撮影およびLINE投稿処理
-                    await lineBotAction(body.events[0].replyToken, body.events[0].message.text, groupId);
-                  };
+                  if (messageText !== undefined) {
+                    if (messageText.includes(process.env.LINE_REPLY_INCLUDE_KEYWORD)) {
+                      // 撮影およびLINE投稿処理
+                      await lineBotAction(body.events[0].replyToken, body.events[0].message.text, groupId);
+                    };
+                  }
                 }
                 
                 // メッセージキューの削除
