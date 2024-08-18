@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const AWS = require('aws-sdk');
-const lineBotAction = require('./lineBotAction.js');
+const lineBotAction = require('./src/lineBotAction.js');
 const app = express();
 const port = 3000;
 
