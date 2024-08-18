@@ -1,7 +1,8 @@
 require('dotenv').config();
 const fs = require('fs-extra');
-const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
+const s3Client = new S3Client({ region: process.env.AWS_REGION_NAME });
 
 // AWS S3アップロード関数
 async function uploadImageToS3(filePath, fileName, contentType) {
@@ -16,7 +17,7 @@ async function uploadImageToS3(filePath, fileName, contentType) {
       ContentType: contentType  // 画像のMIMEタイプを指定
     };
     
-    await s3.upload(params).promise();
+    await s3Client.send(new PutObjectCommand(params));
     console.log(`File uploaded successfully at ${process.env.AWS_S3_BUCKET_NAME}/${key}`);
     
     // S3のURLを生成して返す
@@ -28,4 +29,4 @@ async function uploadImageToS3(filePath, fileName, contentType) {
     throw error;  // エラーを呼び出し元に伝えるために再スロー
   }
 };
-module.exports ={uploadImageToS3}
+module.exports = uploadImageToS3;

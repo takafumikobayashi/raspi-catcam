@@ -31,4 +31,4 @@ async function generateText(message) {
 }
 
 // module.exports で関数をエクスポート
-module.exports = { generateText };
+module.exports = generateText;

@@ -1,6 +1,5 @@
 require('dotenv').config();
-const captureRaspiImage = require('./raspiCamera');
-const captureRaspiVideo = require('./raspiCamera');
+const { captureRaspiImage, captureRaspiVideo } = require('./raspiCamera');
 const generateText = require('./gptAction');
 
 async function lineBotAction(replyToken, messageText, groupId) {
@@ -65,4 +64,4 @@ async function lineBotAction(replyToken, messageText, groupId) {
     return "Error";
   }
 };
-module.exports = {lineBotAction}
+module.exports = lineBotAction;
